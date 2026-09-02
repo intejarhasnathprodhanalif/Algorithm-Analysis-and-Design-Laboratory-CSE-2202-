@@ -74,6 +74,56 @@ void FloydWarshall(vector<vector<pair<int, int>>> &graph)
     }
 }
 
+void showPath(vector<vector<pair<int, int>>> &graph, int u, int v)
+{
+    int INF=1e9;
+    int V=graph.size();
+    vector<vector<int>> dist(V, vector<int>(V, INF));
+    vector<vector<int>> nextnode(V, vector<int>(V, -1));
+
+    for(int u=0; u<V; u++)
+    {
+        dist[u][u] = 0;
+        nextnode[u][u]=u;
+
+        for (auto edge : graph[u])
+        {
+            int v = edge.first;
+            int w = edge.second;
+
+            dist[u][v] = w;
+        }
+    }
+
+    for(int k=0; k<V; k++)
+    {
+        for(int i=0; i<V; i++)
+        {
+            for(int j=0; j<V; j++)
+            {
+                dist[i][j]=min(dist[i][j], (dist[i][k]+dist[k][j]));
+                nextnode[i][j]=nextnode[i][k];
+            }
+        }
+    }
+
+    if(nextnode[u][v]==-1)
+    {
+        cout << "no path exists!" << endl;
+        return;
+    }
+
+    cout << "Path: " << u;
+    int curr = u;
+    while (curr != v)
+    {
+        curr = nextnode[curr][v];
+        cout << " -> " << curr;
+    }
+    
+    cout << endl;
+}
+
 int main()
 {
     int V, E;
