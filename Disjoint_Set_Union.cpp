@@ -26,7 +26,7 @@ class DisjointSetUnion
             return x;
         }
 
-        return find(parent[x]);
+        return parent[x]=find(parent[x]);
     }
 
     void unionbyrank(int a, int b)
